@@ -2,245 +2,237 @@
 
 namespace Controllers;
 
+use MVC\Router;
 use Classes\Email;
 use Model\Usuario;
-use MVC\Router;
 
-class AuthController {
-    public static function login(Router $router) {
-
-        $alertas = [];
-
-        if($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
+class AuthController
+{
+    public static function login(Router $router)
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Instanciamos un nuevo usuario con los datos del formulario
             $usuario = new Usuario($_POST);
+            // Validamos los datos del formulario
+            $alertas = $usuario->validar(CUENTA_EXISTENTE);
 
-            $alertas = $usuario->validarLogin();
-            
-            if(empty($alertas)) {
-                // Verificar quel el usuario exista
+            if (empty($alertas)) {
+                // Comprueba que el Email exista
                 $usuario = Usuario::where('email', $usuario->email);
-                if(!$usuario || !$usuario->confirmado ) {
-                    Usuario::setAlerta('error', 'El Usuario No Existe o no esta confirmado');
+
+                if (!$usuario || !$usuario->confirmado) {
+                    // Alerta de Usuario no encontrado
+                    Usuario::setAlerta(ERROR, 'El E-mail no se encuentra registrado o no ha sido confirmado');
                 } else {
-                    // El Usuario existe
-                    if( password_verify($_POST['password'], $usuario->password) ) {
-                        
-                        // Iniciar la sesión
-                        session_start();    
+                    // El usuario existe, procede a comprobar su contraseña
+                    if (!password_verify($_POST['password'], $usuario->password)) {
+                        // Contraseña incorrecta
+                        Usuario::setAlerta(ERROR, 'Contraseña incorrecta');
+                    } else {
+                        // Autenticamos al usuario
                         $_SESSION['id'] = $usuario->id;
                         $_SESSION['nombre'] = $usuario->nombre;
-                        $_SESSION['apellido'] = $usuario->apellido;
                         $_SESSION['email'] = $usuario->email;
-                        $_SESSION['admin'] = $usuario->admin ?? null;
-                        
-                    } else {
-                        Usuario::setAlerta('error', 'Password Incorrecto');
+                        $_SESSION['login'] = true;
+
+                        // Redireccionamos al Módilo de Proyectos
+                        header('Location: /dashboard');
                     }
                 }
             }
         }
 
+        // Obtenemos las alertas para pasarlas a la vista
         $alertas = Usuario::getAlertas();
-        
-        // Render a la vista 
+        // Render a la Vista
         $router->render('auth/login', [
             'titulo' => 'Iniciar Sesión',
             'alertas' => $alertas
         ]);
     }
 
-    public static function logout() {
-        if($_SERVER['REQUEST_METHOD'] === 'POST') {
-            session_start();
-            $_SESSION = [];
-            header('Location: /');
-        }
-       
+    public static function logout()
+    {
+        $_SESSION = [];
+        header('Location: /');
     }
 
-    public static function registro(Router $router) {
-        $alertas = [];
+    public static function crear(Router $router)
+    {
+        // Instanciamos un nuevo Usuario
         $usuario = new Usuario;
 
-        if($_SERVER['REQUEST_METHOD'] === 'POST') {
-
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Sincronizamos el usuario en memoria con los datos de POST
             $usuario->sincronizar($_POST);
-            
-            $alertas = $usuario->validar_cuenta();
-
-            if(empty($alertas)) {
+            // Valida los cmapos del formulario
+            $alertas = $usuario->validar(CUENTA_NUEVA);
+            // Si pasa la validación, comprueba que el email no exista
+            if (empty($alertas)) {
                 $existeUsuario = Usuario::where('email', $usuario->email);
-
-                if($existeUsuario) {
-                    Usuario::setAlerta('error', 'El Usuario ya esta registrado');
-                    $alertas = Usuario::getAlertas();
+                // Crea alerta de error si ya existe el usuario
+                if ($existeUsuario) {
+                    Usuario::setAlerta(ERROR, 'El e-mail ya se encuenta en uso.');
                 } else {
-                    // Hashear el password
+                    // Hashea el password del usuario
                     $usuario->hashPassword();
-
-                    // Eliminar password2
+                    // Elimina password2 para evitar errores al guardar en DB
                     unset($usuario->password2);
-
-                    // Generar el Token
+                    // Genera Token para confirmación de cuenta
                     $usuario->crearToken();
-
-                    // Crear un nuevo usuario
-                    $resultado =  $usuario->guardar();
-
-                    // Enviar email
-                    $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
-                    $email->enviarConfirmacion();
-                    
-
-                    if($resultado) {
-                        header('Location: /mensaje');
+                    // Guardamos el nuevo usuario en la BD y redireccionamos
+                    if ($usuario->guardar()) {
+                        // Enviamos el E-mail de Confirmación de cuenta
+                        $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
+                        if ($email->enviarConfirmacion(CUENTA_NUEVA)) {
+                            // Redireccionamos
+                            header('Location: /mensaje');
+                        }
                     }
                 }
             }
         }
-
-        // Render a la vista
-        $router->render('auth/registro', [
+        // Obtenemos las alertas para pasarlas a la vista
+        $alertas = Usuario::getAlertas();
+        // Render a la Vista
+        $router->render('auth/crear', [
             'titulo' => 'Crea tu cuenta en DevWebcamp',
-            'usuario' => $usuario, 
+            'usuario' => $usuario,
             'alertas' => $alertas
         ]);
     }
 
-    public static function olvide(Router $router) {
-        $alertas = [];
-        
-        if($_SERVER['REQUEST_METHOD'] === 'POST') {
+    public static function olvide(Router $router)
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Instancia nuevo Usuario con los datos de POST
             $usuario = new Usuario($_POST);
-            $alertas = $usuario->validarEmail();
+            // Valida el e-mail
+            $alertas = $usuario->validar(RECUPERAR_CUENTA);
 
-            if(empty($alertas)) {
-                // Buscar el usuario
+            if (empty($alertas)) {
+                // Busca el usuario
                 $usuario = Usuario::where('email', $usuario->email);
 
-                if($usuario && $usuario->confirmado) {
-
-                    // Generar un nuevo token
-                    $usuario->crearToken();
+                if ($usuario && $usuario->confirmado === '1') {
+                    // Elimina password2 para evitar errores al guardar en DB
                     unset($usuario->password2);
-
-                    // Actualizar el usuario
-                    $usuario->guardar();
-
-                    // Enviar el email
-                    $email = new Email( $usuario->email, $usuario->nombre, $usuario->token );
-                    $email->enviarInstrucciones();
-
-
-                    // Imprimir la alerta
-                    // Usuario::setAlerta('exito', 'Hemos enviado las instrucciones a tu email');
-
-                    $alertas['exito'][] = 'Hemos enviado las instrucciones a tu email';
+                    // Genera un nuevo token 
+                    $usuario->crearToken();
+                    // Actualiza el Usuario
+                    if ($usuario->guardar()) {
+                        // Envia E-mail de Recuperación de contraseña
+                        $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
+                        $email->enviarConfirmacion(RECUPERAR_CUENTA);
+                        // Genera Alerta
+                        Usuario::setAlerta(EXITO, 'Hemos enviado un e-mail con las intrucciones para reestablecer tu contraseña');
+                    }
                 } else {
-                 
-                    // Usuario::setAlerta('error', 'El Usuario no existe o no esta confirmado');
-
-                    $alertas['error'][] = 'El Usuario no existe o no esta confirmado';
+                    Usuario::setAlerta(ERROR, 'El usuario no existe o no está confirmado');
                 }
             }
         }
 
-        // Muestra la vista
+        $alertas = Usuario::getAlertas();
+
+        // Render a la Vista
         $router->render('auth/olvide', [
             'titulo' => 'Recuperar Cuenta',
             'alertas' => $alertas
         ]);
     }
 
-    public static function reestablecer(Router $router) {
+    public static function reestablecer(Router $router)
+    {
+        // Obtiene el token ingresado por la URL
+        $token = s($_GET['token'] ?? '');
+        // Si no hay ningún token, redirecciona a /
+        if (!$token) header('Location: /');
 
-        $token = s($_GET['token']);
-
-        $token_valido = true;
-
-        if(!$token) header('Location: /');
-
-        // Identificar el usuario con este token
+        // Busca al usuario con el token ingresado
         $usuario = Usuario::where('token', $token);
 
-        if(empty($usuario)) {
-            Usuario::setAlerta('error', 'Token No Válido, intenta de nuevo');
-            $token_valido = false;
+        // Genera alerta Si no hay ningún usuario o si no está confirmado
+        if (empty($usuario) || $usuario->confirmado === '0') {
+            // No se encontró un usuario con ese token
+            Usuario::setAlerta(ERROR, 'Token no válido');
         }
 
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if ($usuario) {
+                // Añadimos el Nuevo Password
+                $usuario->sincronizar($_POST);
+                // Validamos el Password
+                $alertas = $usuario->validar(CAMBIAR_PASSWORD);
 
-        if($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-            // Añadir el nuevo password
-            $usuario->sincronizar($_POST);
-
-            // Validar el password
-            $alertas = $usuario->validarPassword();
-
-            if(empty($alertas)) {
-                // Hashear el nuevo password
-                $usuario->hashPassword();
-
-                // Eliminar el Token
-                $usuario->token = null;
-
-                // Guardar el usuario en la BD
-                $resultado = $usuario->guardar();
-
-                // Redireccionar
-                if($resultado) {
-                    header('Location: /');
+                if (empty($alertas)) {
+                    // Hashea el nuevo Password
+                    $usuario->hashPassword();
+                    // Elimina password2 para evitar errores al guardar en DB
+                    unset($usuario->password2);
+                    // Elimina el token
+                    $usuario->token = null;
+                    // Guardamos cambios
+                    if ($usuario->guardar()) {
+                        // Creamos Alerta
+                        Usuario::setAlerta(EXITO, 'Contraseña cambiada Exitosamente');
+                        // Eliminamos los datos en memoria
+                        unset($usuario);
+                    }
                 }
             }
         }
 
         $alertas = Usuario::getAlertas();
-        
-        // Muestra la vista
+
+        // Render a la Vista
         $router->render('auth/reestablecer', [
-            'titulo' => 'Reestablecer Password',
-            'alertas' => $alertas,
-            'token_valido' => $token_valido
+            'titulo' => 'Reestablecer Contraseña',
+            'usuario' => $usuario ?? '',
+            'alertas' => $alertas
         ]);
     }
 
-    public static function mensaje(Router $router) {
-
+    public static function mensaje(Router $router)
+    {
+        // Render a la Vista
         $router->render('auth/mensaje', [
             'titulo' => 'Cuenta Creada Exitosamente'
         ]);
     }
 
-    public static function confirmar(Router $router) {
-        
-        $token = s($_GET['token']);
+    public static function confirmar(Router $router)
+    {
+        // Obtiene el token ingresado por la URL
+        $token = s($_GET['token'] ?? '');
+        // Si no hay ningún token, redirecciona a /
+        if (!$token) header('Location: /');
 
-        if(!$token) header('Location: /');
-
-        // Encontrar al usuario con este token
+        // Busca al usuario con el token ingresado
         $usuario = Usuario::where('token', $token);
 
-        if(empty($usuario)) {
+        // Genera alerta Si no hay ningún usuario o si ya está confirmado
+        if (empty($usuario) || $usuario->confirmado === '1') {
             // No se encontró un usuario con ese token
-            Usuario::setAlerta('error', 'Token No Válido');
+            Usuario::setAlerta(ERROR, 'Token no válido');
         } else {
+            // Usuario Encontrado y no ha Sido confirmado aún
             // Confirmar la cuenta
             $usuario->confirmado = 1;
-            $usuario->token = '';
+            // Elimina el token
+            $usuario->token = null;
+            // Elimina el password2
             unset($usuario->password2);
-            
-            // Guardar en la BD
-            $usuario->guardar();
-
-            Usuario::setAlerta('exito', 'Cuenta Comprobada Correctamente');
+            // Guardamos cambios
+            if ($usuario->guardar()) Usuario::setAlerta(EXITO, 'E-mail verificado exitosamente');
         }
 
-     
+        $alertas = Usuario::getAlertas();
 
+        // Render a la Vista
         $router->render('auth/confirmar', [
             'titulo' => 'Confirma tu cuenta DevWebcamp',
-            'alertas' => Usuario::getAlertas()
+            'alertas' => $alertas
         ]);
     }
 }
