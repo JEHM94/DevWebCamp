@@ -57,7 +57,7 @@ class AuthController
         header('Location: /');
     }
 
-    public static function crear(Router $router)
+    public static function registro(Router $router)
     {
         // Instanciamos un nuevo Usuario
         $usuario = new Usuario;
@@ -95,7 +95,7 @@ class AuthController
         // Obtenemos las alertas para pasarlas a la vista
         $alertas = Usuario::getAlertas();
         // Render a la Vista
-        $router->render('auth/crear', [
+        $router->render('auth/registro', [
             'titulo' => 'Crea tu cuenta en DevWebcamp',
             'usuario' => $usuario,
             'alertas' => $alertas
