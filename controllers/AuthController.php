@@ -231,7 +231,7 @@ class AuthController
 
         // Render a la Vista
         $router->render('auth/confirmar', [
-            'titulo' => 'Confirma tu cuenta DevWebcamp',
+            'titulo' => 'Confirmación de cuenta DevWebcamp',
             'alertas' => $alertas
         ]);
     }

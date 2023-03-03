@@ -2,20 +2,22 @@
     <h2 class="auth__heading"><?php echo $titulo ?? ''; ?></h2>
     <p class="auth__texto">Ingresa los datos a continuación</p>
 
-    <form class="formulario">
+    <?php require_once __DIR__ . '/../templates/alertas.php'; ?>
+
+    <form class="formulario" method="POST">
         <div class="formulario__campo">
             <label for="nombre" class="formulario__label">Nombre</label>
-            <input type="text" class="formulario__input" placeholder="Ingresa tu Nombre" id="nombre" name="nombre" />
+            <input type="text" class="formulario__input" placeholder="Ingresa tu Nombre" id="nombre" name="nombre" value="<?php echo $usuario->nombre; ?>" />
         </div><!-- -formulario__campo -->
 
         <div class="formulario__campo">
             <label for="apellido" class="formulario__label">Apellido</label>
-            <input type="text" class="formulario__input" placeholder="Ingresa tu Apellido" id="apellido" name="apellido" />
+            <input type="text" class="formulario__input" placeholder="Ingresa tu Apellido" id="apellido" name="apellido" value="<?php echo $usuario->apellido; ?>" />
         </div><!-- -formulario__campo -->
 
         <div class="formulario__campo">
             <label for="email" class="formulario__label">Email</label>
-            <input type="email" class="formulario__input" placeholder="Ingresa tu Email" id="email" name="email" />
+            <input type="email" class="formulario__input" placeholder="Ingresa tu Email" id="email" name="email" value="<?php echo $usuario->email; ?>" />
         </div><!-- -formulario__campo -->
 
         <div class="formulario__campo">

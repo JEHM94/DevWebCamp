@@ -7,38 +7,46 @@ use Classes\Email;
 class Usuario extends ActiveRecord
 {
     protected static $tabla = 'usuarios';
-    protected static $columnasDB = ['id', 'nombre', 'email', 'password', 'token', 'confirmado'];
+    protected static $columnasDB = ['id', 'nombre', 'apellido', 'email', 'password', 'confirmado', 'token', 'admin'];
 
     public $id;
     public $nombre;
+    public $apellido;
     public $email;
     public $password;
     public $password2;
     public $password_actual;
     public $password_nuevo;
-    public $token;
     public $confirmado;
+    public $token;
+    public $admin;
 
     public function __construct($arr = [])
     {
         $this->id = $arr['id'] ?? null;
         $this->nombre = $arr['nombre'] ?? '';
+        $this->apellido = $arr['apellido'] ?? '';
         $this->email = $arr['email'] ?? '';
         $this->password = $arr['password'] ?? '';
         $this->password2 = $arr['password2'] ?? null;
         $this->password_actual = $arr['password_actual'] ?? '';
         $this->password_nuevo = $arr['password_nuevo'] ?? '';
-        $this->token = $arr['token'] ?? '';
         $this->confirmado = $arr['confirmado'] ?? 0;
+        $this->token = $arr['token'] ?? '';
+        $this->admin = $arr['admin'] ?? 0;
     }
 
-    public function validar($tipoValidacion = null) : array
+    public function validar($tipoValidacion = null): array
     {
         switch ($tipoValidacion) {
                 // Casos de Validaciones
             case CUENTA_NUEVA:
                 if (!$this->nombre) {
                     self::$alertas[ERROR][] = 'El nombre es obligatorio';
+                }
+
+                if (!$this->apellido) {
+                    self::$alertas[ERROR][] = 'El apellido es obligatorio';
                 }
 
                 // Validación de E-mail de Usuario
@@ -140,19 +148,19 @@ class Usuario extends ActiveRecord
     }
 
     // Comprueba el password ingresado con el actual
-    public function comprobarPassword() : bool
+    public function comprobarPassword(): bool
     {
         return password_verify($this->password_actual, $this->password);
     }
 
     // Hashea el Password
-    public function hashPassword() : void
+    public function hashPassword(): void
     {
         $this->password = password_hash($this->password, PASSWORD_BCRYPT);
     }
 
     // Genera token para confirmación de cuenta
-    public function crearToken() : void
+    public function crearToken(): void
     {
         $this->token = uniqid();
         // Alternativa 32 caracteres

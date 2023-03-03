@@ -40,30 +40,30 @@ class Email
         $mail->isHTML(true);
         $mail->CharSet = 'UTF-8';
 
-        $url = 'https://jehm-uptask.alwaysdata.net';
+        $url = $_ENV['HOST'] ?? '';
 
         switch ($tipoContenido) {
 
             case CUENTA_NUEVA:
-                $mail->Subject = 'UpTask - Confirma tu cuenta';
+                $mail->Subject = 'DevWebCamp - Confirma tu cuenta';
                 // Email content para Cuentas Nueva
                 $contenido =  '<html>';
                 $contenido .= '<p><strong>Bienvenido/a ' . $receptor . '.</strong></p>';
-                $contenido .= '<p>¡Su cuenta en UpTask ha sido creada exitosamente!.</p>';
+                $contenido .= '<p>¡Su cuenta en DevWebCamp ha sido creada exitosamente!.</p>';
                 $contenido .= '<p>Haga click en el siguiente enlace para confirmar su E-mail y poder acceder a su cuenta.</p>';
-                $contenido .= '<p><a href="' . $url . '/confirmar?token=';
+                $contenido .= '<p><a href="' . $url . '/confirmar-cuenta?token=';
                 $contenido .= $this->token;
                 $contenido .= '">Confirmar E-mail</a></p>';
                 $contenido .= '<p><strong>Si usted no solicitó la información anterior, puede ignorar este mensaje.</strong></p>';
                 $contenido .= '</html>';
 
                 // Texto plano alternativo
-                $contenidoAlt = 'Bienvenido ' . $receptor . '. Visite el siguiente enlace para poder verificar su cuenta en AppSalon: ' . $url . '/confirmar?token=' . $this->token . ' | Si usted no solicitó la información anterior, puede ignorar este mensaje.';
+                $contenidoAlt = 'Bienvenido ' . $receptor . '. Visite el siguiente enlace para poder verificar su cuenta en DevWebCamp: ' . $url . '/confirmar-cuenta?token=' . $this->token . ' | Si usted no solicitó la información anterior, puede ignorar este mensaje.';
 
                 break;
 
             case RECUPERAR_CUENTA:
-                $mail->Subject = 'UpTask - Reestablece tu contraseña';
+                $mail->Subject = 'DevWebCamp - Reestablece tu contraseña';
                 // Email content para Recuperar Contraseña
                 $contenido =  '<html>';
                 $contenido .= '<p><strong>Hola ' . $receptor . '.</strong></p>';
@@ -76,7 +76,7 @@ class Email
                 $contenido .= '</html>';
 
                 // Texto plano alternativo
-                $contenidoAlt = 'Hola ' . $receptor . '. Visite el siguiente enlace para reestablecer su contraseña en AppSalon: ' . $url . '/reestablecer?token=' . $this->token . ' | Si usted no solicitó la información anterior, puede ignorar este mensaje.';
+                $contenidoAlt = 'Hola ' . $receptor . '. Visite el siguiente enlace para reestablecer su contraseña en DevWebCamp: ' . $url . '/reestablecer?token=' . $this->token . ' | Si usted no solicitó la información anterior, puede ignorar este mensaje.';
                 break;
             default:
                 $contenido = '';

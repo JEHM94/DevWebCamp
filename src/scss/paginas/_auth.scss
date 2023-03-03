@@ -3,4 +3,18 @@
 
 .auth {
     @include m.contenedor-sm;
+
+    &__boton {
+        display: flex;
+        justify-content: center;
+        margin-top: 5rem;
+
+        &--enlace {
+            @include m.boton(v.$azul, v.$blanco);
+
+            @include m.tablet {
+                width: fit-content;
+            }
+        }
+    }
 }
