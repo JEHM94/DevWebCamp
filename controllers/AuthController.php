@@ -32,11 +32,17 @@ class AuthController
                         // Autenticamos al usuario
                         $_SESSION['id'] = $usuario->id;
                         $_SESSION['nombre'] = $usuario->nombre;
+                        $_SESSION['apellido'] = $usuario->apellido;
                         $_SESSION['email'] = $usuario->email;
-                        $_SESSION['login'] = true;
+                        $_SESSION['admin'] = $usuario->admin;
 
-                        // Redireccionamos al Módilo de Proyectos
-                        header('Location: /dashboard');
+                        // Redireccionamos
+                        if ($usuario->admin) {
+                            header('Location: /admin/dashboard');
+                            return;
+                        }
+
+                        header('Location: /finalizar-registro');
                     }
                 }
             }
@@ -47,7 +53,8 @@ class AuthController
         // Render a la Vista
         $router->render('auth/login', [
             'titulo' => 'Iniciar Sesión',
-            'alertas' => $alertas
+            'alertas' => $alertas,
+            'usuario' => $usuario ?? ''
         ]);
     }
 
@@ -123,9 +130,10 @@ class AuthController
                     if ($usuario->guardar()) {
                         // Envia E-mail de Recuperación de contraseña
                         $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
-                        $email->enviarConfirmacion(RECUPERAR_CUENTA);
-                        // Genera Alerta
-                        Usuario::setAlerta(EXITO, 'Hemos enviado un e-mail con las intrucciones para reestablecer tu contraseña');
+                        if ($email->enviarConfirmacion(RECUPERAR_CUENTA)) {
+                            // Genera Alerta
+                            Usuario::setAlerta(EXITO, 'Hemos enviado un e-mail con las intrucciones para reestablecer tu contraseña');
+                        }
                     }
                 } else {
                     Usuario::setAlerta(ERROR, 'El usuario no existe o no está confirmado');
