@@ -38,8 +38,7 @@ class Router
 
         // Array de Rutas Protegidas
         $protectedRoutes = [
-            /* '/finalizar-registro' */
-        ];
+            /* '/finalizar-registro' */];
 
         // Array de Rutas Login
         $loginRoutes = [
@@ -48,13 +47,11 @@ class Router
             '/olvide',
             '/reestablecer',
             '/mensaje',
-            '/confirmar-cuenta' */
-        ];
+            '/confirmar-cuenta' */];
 
         // Array de Rutas Protegidas de Administrador
         $adminRoutes = [
-            /* '/admin/dashboard' */
-        ];
+            /* '/admin/dashboard' */];
 
         // Si la Url actual es una ruta protegida
         // y el usuario no está autenticado, redirecciona a /
@@ -105,6 +102,17 @@ class Router
         // entonces incluimos la vista en el layout
         include_once __DIR__ . "/views/$view.php";
         $contenido = ob_get_clean(); // Limpia el Buffer
+
+        // Utilizar el layout de acuerdo a la URL
+        $currentUrl = strtok($_SERVER['REQUEST_URI'], '?') ?? '/';
+
+        // Muestra la vista de administracion
+        if (str_contains($currentUrl, '/admin')) {
+            include_once __DIR__ . '/views/admin-layout.php';
+            return;
+        }
+
+        // Muestra la vista de usuario general
         include_once __DIR__ . '/views/layout.php';
     }
 }
