@@ -64,7 +64,8 @@
         padding: 2rem;
         transition: 300ms background-color ease-in-out, 300ms color ease, 300ms border-radius ease;
 
-        &:hover, &--actual {
+        &:hover,
+        &--actual {
             background-color: lighten($color: v.$gris-oscuro, $amount: 20);
             color: v.$blanco;
             border-radius: 1rem;
@@ -83,13 +84,49 @@
     }
 
     &__contenido {
-        background-color: v.$gris-oscuro;
-        color: v.$blanco;
+        //background-color: v.$gris-oscuro;
+        //color: v.$blanco;
         width: 100%;
         padding: 1rem 1rem 3rem 1rem;
 
         @include m.tablet {
             padding: 1rem 5rem 3rem 5rem;
         }
+    }
+
+    &__contenedor-boton {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 2rem;
+
+        @include m.tablet {
+            width: min(95%, 80rem);
+            margin: 0 auto;
+            justify-content: flex-end;
+            margin-bottom: 5rem
+        }
+    }
+
+    &__boton {
+        @include m.boton(v.$azul, v.$blanco);
+        text-transform: uppercase;
+        font-size: 1.4rem;
+        width: 95%;
+
+        @include m.tablet {
+            width: auto;
+        }
+    }
+
+    &__contenedor {
+        @include m.shadow;
+        background-color: v.$blanco;
+        padding: 2rem;
+        border-radius: 1rem;
+    }
+
+    &__formulario {
+        @extend .dashboard__contenedor;
+        @include m.contenedor-md;
     }
 }

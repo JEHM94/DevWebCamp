@@ -38,12 +38,18 @@ $router->get('/confirmar-cuenta', [AuthController::class, 'confirmar']);
 // ** Area de Administración **
 $router->get('/admin/dashboard', [DashboardController::class, 'index']);
 
+// Ponentes
 $router->get('/admin/ponentes', [PonentesController::class, 'index']);
+$router->get('/admin/ponentes/crear', [PonentesController::class, 'crear']);
+$router->post('/admin/ponentes/crear', [PonentesController::class, 'crear']);
 
+// Eventos
 $router->get('/admin/eventos', [EventosController::class, 'index']);
 
+// Registrados
 $router->get('/admin/registrados', [RegistradosController::class, 'index']);
 
+// Regalos
 $router->get('/admin/regalos', [RegalosController::class, 'index']);
 
 
