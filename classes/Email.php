@@ -44,7 +44,7 @@ class Email
 
         switch ($tipoContenido) {
 
-            case CUENTA_NUEVA:
+            case NUEVO:
                 $mail->Subject = 'DevWebCamp - Confirma tu cuenta';
                 // Email content para Cuentas Nueva
                 $contenido =  '<html>';

@@ -14,7 +14,7 @@ class AuthController
             // Instanciamos un nuevo usuario con los datos del formulario
             $usuario = new Usuario($_POST);
             // Validamos los datos del formulario
-            $alertas = $usuario->validar(CUENTA_EXISTENTE);
+            $alertas = $usuario->validar(EXISTENTE);
 
             if (empty($alertas)) {
                 // Comprueba que el Email exista
@@ -74,7 +74,7 @@ class AuthController
             // Sincronizamos el usuario en memoria con los datos de POST
             $usuario->sincronizar($_POST);
             // Valida los cmapos del formulario
-            $alertas = $usuario->validar(CUENTA_NUEVA);
+            $alertas = $usuario->validar(NUEVO);
             // Si pasa la validación, comprueba que el email no exista
             if (empty($alertas)) {
                 $existeUsuario = Usuario::where('email', $usuario->email);
@@ -92,7 +92,7 @@ class AuthController
                     if ($usuario->guardar()) {
                         // Enviamos el E-mail de Confirmación de cuenta
                         $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
-                        if ($email->enviarConfirmacion(CUENTA_NUEVA)) {
+                        if ($email->enviarConfirmacion(NUEVO)) {
                             // Redireccionamos
                             header('Location: /mensaje');
                         }

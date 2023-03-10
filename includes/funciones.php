@@ -1,6 +1,6 @@
 <?php
-define('CUENTA_NUEVA', 'cuenta_nueva');
-define('CUENTA_EXISTENTE', 'cuenta_existente');
+define('NUEVO', 'nuevo');
+define('EXISTENTE', 'existente');
 define('RECUPERAR_CUENTA', 'recuperar_cuenta');
 define('CAMBIAR_PASSWORD', 'cambiar_password');
 define('NUEVO_PASSWORD', 'nuevo_password');

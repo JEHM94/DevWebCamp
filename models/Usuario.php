@@ -40,7 +40,7 @@ class Usuario extends ActiveRecord
     {
         switch ($tipoValidacion) {
                 // Casos de Validaciones
-            case CUENTA_NUEVA:
+            case NUEVO:
                 if (!$this->nombre) {
                     self::$alertas[ERROR][] = 'El nombre es obligatorio';
                 }
@@ -69,7 +69,7 @@ class Usuario extends ActiveRecord
 
                 return self::$alertas;
 
-            case CUENTA_EXISTENTE:
+            case EXISTENTE:
                 // Validación de E-mail de Usuario
                 if (!$this->email) {
                     self::$alertas[ERROR][] = 'Debe Ingresar su E-mail';
@@ -110,7 +110,7 @@ class Usuario extends ActiveRecord
 
                 return self::$alertas;
 
-            case NUEVO_PASSWORD:
+                /* case NUEVO_PASSWORD:
                 // Validación de cambio Contraseña
                 if (!$this->password_actual) {
                     self::$alertas[ERROR][] = 'Debe Ingresar su Contraseña actual';
@@ -123,9 +123,9 @@ class Usuario extends ActiveRecord
                     self::$alertas[ERROR][] = 'La contraseña nueva no coincide';
                 }
 
-                return self::$alertas;
+                return self::$alertas; */
 
-            case ACTUALIZAR_PERFIL:
+                /* case ACTUALIZAR_PERFIL:
                 if (!$this->nombre) {
                     self::$alertas[ERROR][] = 'Su nombre no puede estar vacío';
                 }
@@ -141,7 +141,7 @@ class Usuario extends ActiveRecord
                 }
 
                 return self::$alertas;
-
+*/
             default:
                 return null;
         }
