@@ -102,10 +102,16 @@
         margin-bottom: 2rem;
 
         @include m.tablet {
-            width: min(95%, 80rem);
             margin: 0 auto;
             justify-content: flex-end;
             margin-bottom: 5rem
+        }
+
+        &--volver {
+            @include m.tablet {
+                justify-content: flex-start;
+                width: min(95%, 80rem);
+            }
         }
     }
 

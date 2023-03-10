@@ -51,7 +51,12 @@ class Router
 
         // Array de Rutas Protegidas de Administrador
         $adminRoutes = [
-            /* '/admin/dashboard' */];
+            '/admin/dashboard',
+            '/admin/ponentes',
+            '/admin/ponentes/crear',
+            '/admin/ponentes/editar',
+            '/admin/ponentes/eliminar'
+        ];
 
         // Si la Url actual es una ruta protegida
         // y el usuario no está autenticado, redirecciona a /
@@ -71,7 +76,7 @@ class Router
         // Si la Url actual es una ruta de Administrador
         // y el usuario no está autenticado como Admin, redirecciona a /
         if (in_array($currentUrl, $adminRoutes) && !$admin) {
-            header('Location: /');
+            header('Location: /login');
             // Retorna para prevenir la ejecución del código del controlador y la función asociada
             return;
         }

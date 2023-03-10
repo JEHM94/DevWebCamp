@@ -10,6 +10,12 @@
     const tagsDiv = document.querySelector('#tags');
     const tagsInputHidden = document.querySelector('[name="tags"]');
 
+    // Recupera Tags del input oculto
+    if (tagsInputHidden.value !== '') {
+        tags = tagsInputHidden.value.split(',');
+        mostrarTags();
+    }
+
     // Escucha los cambios del input
     tagsInput.addEventListener('keypress', guardarTag);
 
@@ -48,13 +54,13 @@
         actualizarInputHidden();
     }
 
-    function eliminarTag(e){
+    function eliminarTag(e) {
         e.target.remove();
         tags = tags.filter(tag => tag !== e.target.textContent);
         actualizarInputHidden();
     }
 
-    function actualizarInputHidden(){
+    function actualizarInputHidden() {
         tagsInputHidden.value = tags.toString();
     }
 
