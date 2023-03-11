@@ -55,3 +55,6 @@
     <?php endif; ?>
 
 </div><!-- .dashboard__contenedor -->
+
+
+<?php echo $paginacion; ?>
