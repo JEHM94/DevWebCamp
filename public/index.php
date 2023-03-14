@@ -2,6 +2,8 @@
 
 require_once __DIR__ . '/../includes/app.php';
 
+use Controllers\APIEventoController;
+use Controllers\APIPonenteController;
 use MVC\Router;
 use Controllers\AuthController;
 use Controllers\DashboardController;
@@ -34,6 +36,9 @@ $router->post('/reestablecer', [AuthController::class, 'reestablecer']);
 $router->get('/mensaje', [AuthController::class, 'mensaje']);
 $router->get('/confirmar-cuenta', [AuthController::class, 'confirmar']);
 
+// ** Area de API **
+$router->get('/api/eventos-horario', [APIEventoController::class, 'index']);
+$router->get('/api/ponentes', [APIPonenteController::class, 'index']);
 
 // ** Area de Administración **
 $router->get('/admin/dashboard', [DashboardController::class, 'index']);
@@ -51,6 +56,9 @@ $router->post('/admin/ponentes/eliminar', [PonentesController::class, 'eliminar'
 
 // Eventos
 $router->get('/admin/eventos', [EventosController::class, 'index']);
+// Crear
+$router->get('/admin/eventos/crear', [EventosController::class, 'crear']);
+$router->post('/admin/eventos/crear', [EventosController::class, 'crear']);
 
 // Registrados
 $router->get('/admin/registrados', [RegistradosController::class, 'index']);

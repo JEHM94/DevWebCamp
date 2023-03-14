@@ -50,10 +50,12 @@
         color: rgba($color: v.$negro, $alpha: .8);
     }
 
-    &__input {
+    &__input,
+    &__select {
         padding: 1rem;
         border: 1px solid darken($color: v.$gris-claro, $amount: 20);
         border-radius: .5rem;
+        background-color: v.$blanco;
 
         &--file {
             border: none;
@@ -67,16 +69,21 @@
         }
     }
 
-    &__texto{
+    &__radio {
+        display: flex;
+        gap: 2rem;
+    }
+
+    &__texto {
         color: v.$gris;
         margin-top: 3rem
     }
 
-    &__imagen{
+    &__imagen {
         max-width: 20rem;
     }
 
-    &__listado{
+    &__listado {
         @include m.tags;
     }
 
