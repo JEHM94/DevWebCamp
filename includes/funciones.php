@@ -25,7 +25,7 @@ function s($html): string
     return $s;
 }
 
-function paginaActual($path) : bool
+function paginaActual($path): bool
 {
     return str_contains($_SERVER['PATH_INFO'], $path) ? true : false;
 }
