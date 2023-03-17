@@ -15,7 +15,7 @@
             <thead class="table__thead">
                 <tr>
                     <th scope="col" class="table__th">Evento</th>
-                    <th scope="col" class="table__th">Categoria</th>
+                    <th scope="col" class="table__th table__th--responsive">Categoria</th>
                     <th scope="col" class="table__th">Día - Hora</th>
                     <th scope="col" class="table__th">Ponente</th>
 
@@ -30,7 +30,7 @@
                             <?php echo $evento->nombre; ?>
                         </td>
 
-                        <td class="table__td">
+                        <td class="table__td table__td--responsive">
                             <?php echo $evento->categoria->nombre; ?>
                         </td>
 
@@ -44,7 +44,7 @@
 
                         <td class="table__td--acciones">
                             <a class="table__accion table__accion--editar" href="/admin/eventos/editar?id=<?php echo $evento->id; ?>">
-                                <i class="fa-solid fa-user-pen"></i>
+                                <i class="fa-solid fa-pencil"></i>
                                 Editar
                             </a>
 

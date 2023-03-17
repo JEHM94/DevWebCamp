@@ -193,9 +193,8 @@ class PonentesController
             // Si no encuentra el Ponente, redirecciona
             if (!$ponente) header('Location: /admin/ponentes');
 
-            if ($ponente->eliminar()) {
-                header('Location: /admin/ponentes');
-            }
+            // Cuando es eliminado el registro, redirecciona
+            if ($ponente->eliminar()) header('Location: /admin/ponentes');
         }
     }
 }

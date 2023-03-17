@@ -13,16 +13,32 @@
     &__th {
         padding: 1rem;
         text-align: left;
+
+        &--responsive {
+            display: none;
+
+            @include m.tablet {
+                display: block;
+            }
+        }
     }
 
-    &__tr{
-        &:nth-of-type(even){
+    &__tr {
+        &:nth-of-type(even) {
             background-color: darken(v.$gris-claro, 2);
         }
     }
 
     &__td {
         padding: 1.5rem 1rem;
+
+        &--responsive {
+            display: none;
+
+            @include m.tablet {
+                display: block;
+            }
+        }
 
         &--acciones {
             @extend .table__td;
@@ -44,7 +60,7 @@
         font-size: 1.4rem;
         font-weight: v.$bold;
 
-        @include m.tablet{
+        @include m.tablet {
             display: inline-block;
         }
 

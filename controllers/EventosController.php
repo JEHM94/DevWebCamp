@@ -87,4 +87,79 @@ class EventosController
             'alertas' => $alertas
         ]);
     }
+
+    public static function editar(Router $router)
+    {
+        // Verifica que sea un ID válido
+        $id = $_GET['id'] ?? '';
+        $id = filter_var($id, FILTER_VALIDATE_INT);
+
+        // Si el id no es un número entero, redirecciona
+        if (!$id) header('Location: /admin/eventos');
+
+        $categorias = Categoria::all('ASC');
+        $dias = Dia::all('ASC');
+        $horas = Hora::all('ASC');
+
+        // Busca el Evento con el id ingresado
+        $evento = Evento::find($id);
+
+        // Si no encuentra el Evento, redirecciona
+        if (!$evento) header('Location: /admin/eventos');
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $horaEvento = $evento->hora_id;
+            $ponenteEvento = $evento->ponente_id;
+
+            $evento->sincronizar($_POST);
+
+            $alertas = $evento->validar();
+
+            if (empty($alertas)) {
+
+                if ($evento->guardar()) {
+                    header('Location: /admin/eventos');
+                    return;
+                }
+            }
+
+            // Reestablece la hora y el ponente para una mejor
+            // experiencia de usuario en caso que los olvide
+            if (empty($evento->hora_id)) $evento->hora_id = $horaEvento;
+            if (empty($evento->ponente_id)) $evento->ponente_id = $ponenteEvento;
+        }
+
+        $alertas = Evento::getAlertas();
+
+        $router->render('admin/eventos/editar', [
+            'titulo' => 'Actualizar Evento',
+            'categorias' => $categorias,
+            'dias' => $dias,
+            'horas' => $horas,
+            'evento' => $evento ?? '',
+            'alertas' => $alertas
+        ]);
+    }
+
+    public static function eliminar()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Verifica que sea un ID válido
+            $id = $_POST['id'] ?? '';
+            $id = filter_var($id, FILTER_VALIDATE_INT);
+
+            // Si el id no es un número entero, redirecciona
+            if (!$id) header('Location: /admin/eventos');
+
+            // Busca el Evento con el id ingresado
+            $evento = Evento::find($id);
+
+            // Si no encuentra el Ponente, redirecciona
+            if (!$evento) header('Location: /admin/eventos');
+
+            // Cuando es eliminado el registro, redirecciona
+            if ($evento->eliminar()) header('Location: /admin/eventos');
+        }
+    }
 }

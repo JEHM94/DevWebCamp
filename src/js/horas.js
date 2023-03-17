@@ -17,14 +17,44 @@
         const inputHiddenDia = document.querySelector('[name="dia_id"]');
         // Selecciona el input hidden para asignarle un value
         const inputHiddenHora = document.querySelector('[name="hora_id"]');
+        // Selecciona el listado de todas las Horas
+        const listadoHoras = document.querySelectorAll('#horas li');
+
+
+        // Para valores originales si el usuario está Editando un Evento
+        let categoriaActual = '';
+        let diaActual = '';
+        let horaActual = '';
+
+        // Al iniciar la página Verifica si alguno de los inputs ya tiene un valor
+        // Esto significa que el usuario está editando el Evento
+        if (categoria.value || inputHiddenDia.value || inputHiddenHora.value) {
+            // Guarda los valores actuales de los inputs al momento de Editar un Evento
+            // para preservar los valores originales
+            categoriaActual = categoria.value;
+            diaActual = inputHiddenDia.value;
+            horaActual = inputHiddenHora.value;
+
+            // Asigna los Valores originales al arreglo de busqueda
+            busqueda.categoria_id = categoriaActual;
+            busqueda.dia = diaActual;
+
+            // Busca las Horas ocupadas con Eventos
+            buscarEventos();
+        }
 
 
         // Asigna el evento para el cambio del select
         categoria.addEventListener('change', terminoBusqueda);
 
         // Asigna el evento para el cambio del radio
-        dias.forEach(dia => dia.addEventListener('change', terminoBusqueda));
-
+        dias.forEach(dia => {
+            dia.addEventListener('change', terminoBusqueda);
+            dia.addEventListener('change', () => {
+                // Asigna el valor al input oculto de día
+                inputHiddenDia.value = dia.value;
+            });
+        });
 
         function terminoBusqueda(e) {
             // Llena el día en el objeto de busqueda con el valor del día
@@ -49,11 +79,31 @@
             const eventos = await resultado.json();
 
             obtenerHorasDisponibles(eventos.body);
+
+            mostrarHoraActual();
+        }
+
+        function mostrarHoraActual() {
+            // Verifica si el usuario está en la misma categoría y el mismo día
+            // que provienen del servidor al momento de Editar
+            if (categoria.value === categoriaActual && inputHiddenDia.value === diaActual) {
+                // Asigna la Hora Actual del Evento que se está editando
+                const horaSeleccionada = document.querySelector(`[data-hora-id="${horaActual}"]`);
+
+                // Modifica las clases del LI
+                horaSeleccionada.classList.remove('horas__hora--deshabilitada');
+                horaSeleccionada.classList.add('horas__hora--seleccionada');
+
+                // Agrega evento click a las hora Seleccionada
+                horaSeleccionada.addEventListener('click', seleccionarHora);
+
+                // Asiga el ID de la hora actual al Input oculto
+                inputHiddenHora.value = horaSeleccionada.dataset.horaId;
+            }
         }
 
         function obtenerHorasDisponibles(eventos) {
             // Reinicia las Horas
-            const listadoHoras = document.querySelectorAll('#horas li');
             listadoHoras.forEach(li => {
                 // Agrega las clase de horas deshabilitadas
                 li.classList.add('horas__hora--deshabilitada')
@@ -94,8 +144,7 @@
 
         function limpiarHoraPrevia() {
             inputHiddenHora.value = '';
-            inputHiddenDia.value = '';
-            // Remueve la Clase se seleccionada cuando hay un nuevo click
+            // Remueve la Clase de seleccionada cuando hay un nuevo click
             const horaPrevia = document.querySelector('.horas__hora--seleccionada');
             if (horaPrevia) {
                 horaPrevia.classList.remove('horas__hora--seleccionada');

@@ -55,7 +55,11 @@ class Router
             '/admin/ponentes',
             '/admin/ponentes/crear',
             '/admin/ponentes/editar',
-            '/admin/ponentes/eliminar'
+            '/admin/ponentes/eliminar',
+            '/admin/eventos',
+            '/admin/eventos/crear',
+            '/admin/eventos/editar',
+            '/admin/eventos/eliminar'
         ];
 
         // Si la Url actual es una ruta protegida
