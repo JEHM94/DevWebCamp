@@ -11,6 +11,12 @@ define('ERROR', 'error');
 define('EXITO', 'exito');
 define('NEUTRAL', 'neutral');
 
+// Eventos
+define('CONFERENCIA', '1');
+define('WORKSHOP', '2');
+define('VIERNES', '1');
+define('SABADO', '2');
+
 
 function debuguear($variable): string
 {

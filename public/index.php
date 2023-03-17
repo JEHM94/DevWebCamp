@@ -8,6 +8,7 @@ use MVC\Router;
 use Controllers\AuthController;
 use Controllers\DashboardController;
 use Controllers\EventosController;
+use Controllers\PaginasController;
 use Controllers\PonentesController;
 use Controllers\RegalosController;
 use Controllers\RegistradosController;
@@ -70,6 +71,20 @@ $router->get('/admin/registrados', [RegistradosController::class, 'index']);
 
 // Regalos
 $router->get('/admin/regalos', [RegalosController::class, 'index']);
+
+// ** Area Pública **
+// Página principal
+$router->get('/', [PaginasController::class, 'index']);
+
+// Sobre DevWebCamp
+$router->get('/devwebcamp', [PaginasController::class, 'evento']);
+
+// Paquetes DevWebCamp
+$router->get('/paquetes', [PaginasController::class, 'paquetes']);
+
+// Conferencias & Workshops DevWebCamp
+$router->get('/workshops-conferencias', [PaginasController::class, 'conferencias']);
+
 
 
 
