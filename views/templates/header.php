@@ -19,7 +19,7 @@
                 </h1>
             </a>
 
-            <p class="header__texto">Enero 01-02 2023</p>
+            <p class="header__texto">Enero 06 y 07, 2023</p>
             <p class="header__texto header__texto--modalidad">En línea - Presencial</p>
 
             <a href="/registro" class="header__boton">Comprar Pase</a>

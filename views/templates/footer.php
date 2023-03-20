@@ -29,6 +29,9 @@
             <a class="menu-redes__enlace" rel="noopener noreferrer" target="_blank" href="https://github.com/JEHM94">
                 <span class="menu-redes__ocultar">GitHub</span>
             </a>
+            <a class="menu-redes__enlace" rel="noopener noreferrer" target="_blank" href="https://linkedin.com/in/jesus-hamel/">
+                <span class="menu-redes__ocultar">GitHub</span>
+            </a>
         </nav>
     </div><!-- .footer__grid -->
 

@@ -85,6 +85,11 @@ $router->get('/paquetes', [PaginasController::class, 'paquetes']);
 // Conferencias & Workshops DevWebCamp
 $router->get('/workshops-conferencias', [PaginasController::class, 'conferencias']);
 
+// Página 404
+$router->get('/404', [PaginasController::class, 'error']);
+
+
+
 
 
 

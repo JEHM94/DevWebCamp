@@ -33,5 +33,23 @@ function s($html): string
 
 function paginaActual($path): bool
 {
-    return str_contains($_SERVER['PATH_INFO'], $path) ? true : false;
+    return str_contains($_SERVER['PATH_INFO'] ?? '/', $path) ? true : false;
+}
+
+// Devuelve un efecto Aleatorio de la librería AOS
+function aos_animacion(): void
+{
+    $efectos = [
+        'fade-up',
+        'fade-down',
+        'fade-left',
+        'fade-right',
+        'flip-left',
+        'flip-right',
+        'zoom-in',
+        'zoom-out',
+        'zoom-in-up',
+        'zoom-in-down'
+    ];
+    echo ' data-aos="' . $efectos[array_rand($efectos, 1)] . '" ';
 }
