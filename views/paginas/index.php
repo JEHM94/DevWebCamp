@@ -142,7 +142,7 @@
 
     </div><!-- .boletos__grid -->
 
-    <div <?php aos_animacion(); ?> class="boleto__enlace-contenedor">
+    <div class="boleto__enlace-contenedor">
         <a href="/paquetes" class="boleto__enlace">Ver Paquetes</a>
     </div><!-- .boleto__enlace-contenedor -->
 </section>

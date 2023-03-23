@@ -8,7 +8,7 @@
 
         <p class="eventos__fecha">Viernes, 06 de Enero</p>
 
-        <div <?php aos_animacion(); ?> class="eventos__listado slider swiper">
+        <div data-aos="fade-left" class="eventos__listado slider swiper">
             <div class="swiper-wrapper">
                 <?php
                 foreach ($eventos['conferencias_v'] as $evento) {
@@ -23,7 +23,7 @@
 
         <p class="eventos__fecha">Sábado, 07 de Enero</p>
 
-        <div <?php aos_animacion(); ?> class="eventos__listado slider swiper">
+        <div data-aos="fade-left" class="eventos__listado slider swiper">
             <div class="swiper-wrapper">
                 <?php
                 foreach ($eventos['conferencias_s'] as $evento) {
@@ -43,7 +43,7 @@
 
         <p class="eventos__fecha">Viernes, 06 de Enero</p>
 
-        <div <?php aos_animacion(); ?> class="eventos__listado slider swiper">
+        <div data-aos="fade-left" class="eventos__listado slider swiper">
             <div class="swiper-wrapper">
                 <?php
                 foreach ($eventos['workshops_v'] as $evento) {
@@ -58,7 +58,7 @@
 
         <p class="eventos__fecha">Sábado, 07 de Enero</p>
 
-        <div <?php aos_animacion(); ?> class="eventos__listado slider swiper">
+        <div data-aos="fade-left" class="eventos__listado slider swiper">
             <div class="swiper-wrapper">
                 <?php
                 foreach ($eventos['workshops_s'] as $evento) {

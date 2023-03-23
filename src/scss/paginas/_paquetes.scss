@@ -15,10 +15,11 @@
 
 .paquete {
     @include m.card;
-    &:nth-child(2){
+
+    &:nth-child(2) {
         order: -1;
 
-        @include m.tablet{
+        @include m.tablet {
             order: unset;
         }
     }
@@ -26,13 +27,19 @@
     &__lista {
         @include m.reset-lista;
         line-height: 2;
+        color: v.$gris;
     }
 
-    &__precio{
+    &__precio {
         font-size: 6rem;
-        margin: 3rem 0 0 0;
+        margin: 3rem 0;
         color: v.$azul;
         font-weight: v.$black;
         text-align: center;
+    }
+
+    &__submit {
+        @include m.boton(v.$azul, v.$blanco);
+        margin-top: 3rem;
     }
 }

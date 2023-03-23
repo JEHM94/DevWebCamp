@@ -38,16 +38,19 @@ class Router
 
         // Array de Rutas Protegidas
         $protectedRoutes = [
-            /* '/finalizar-registro' */];
+            '/logout',
+            '/finalizar-registro'
+        ];
 
         // Array de Rutas Login
         $loginRoutes = [
-            /* '/login',
+            '/login',
             '/registro',
             '/olvide',
             '/reestablecer',
             '/mensaje',
-            '/confirmar-cuenta' */];
+            '/confirmar-cuenta'
+        ];
 
         // Array de Rutas Protegidas de Administrador
         $adminRoutes = [
@@ -59,13 +62,15 @@ class Router
             '/admin/eventos',
             '/admin/eventos/crear',
             '/admin/eventos/editar',
-            '/admin/eventos/eliminar'
+            '/admin/eventos/eliminar',
+            '/api/eventos-horario',
+            '/api/ponentes'
         ];
 
         // Si la Url actual es una ruta protegida
         // y el usuario no está autenticado, redirecciona a /
         if (in_array($currentUrl, $protectedRoutes) && !$auth) {
-            header('Location: /');
+            header('Location: /login');
             // Retorna para prevenir la ejecución del código del controlador y la función asociada
             return;
         }
@@ -73,7 +78,7 @@ class Router
         // Si la Url actual es una ruta de login
         // y ya existe una sesión activa, redirecciona a /dashboard
         if (in_array($currentUrl, $loginRoutes) && $auth) {
-            header('Location: /dashboard');
+            header('Location: /finalizar-registro');
             // Retorna para prevenir la ejecución del código del controlador y la función asociada
             return;
         }

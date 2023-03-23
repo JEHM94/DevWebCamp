@@ -12,6 +12,7 @@ use Controllers\PaginasController;
 use Controllers\PonentesController;
 use Controllers\RegalosController;
 use Controllers\RegistradosController;
+use Controllers\RegistroController;
 
 $router = new Router();
 
@@ -84,6 +85,20 @@ $router->get('/paquetes', [PaginasController::class, 'paquetes']);
 
 // Conferencias & Workshops DevWebCamp
 $router->get('/workshops-conferencias', [PaginasController::class, 'conferencias']);
+
+// ** Registro de Usuarios **
+// Terminar Registro de Clientes
+$router->get('/finalizar-registro', [RegistroController::class, 'crear']);
+
+// Plan Gratuito
+$router->post('/finalizar-registro/gratis', [RegistroController::class, 'gratis']);
+
+// Planes Pagos
+$router->post('/finalizar-registro/pago', [RegistroController::class, 'pago']);
+
+// Boleto Virtual
+$router->get('/boleto', [RegistroController::class, 'boleto']);
+
 
 // Página 404
 $router->get('/404', [PaginasController::class, 'error']);
