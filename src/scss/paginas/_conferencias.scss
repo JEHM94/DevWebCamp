@@ -95,4 +95,28 @@
     &__autor-nombre {
         font-weight: v.$bold;
     }
+
+    &__agregar {
+        @include m.boton(v.$blanco, v.$negro);
+        margin-top: 1rem;
+        padding: 1rem 0;
+        z-index: 2;
+
+        &--disponible {
+            font-size: 1.4rem;
+            color: v.$gris;
+        }
+        &:nth-child(n){
+            z-index: -1;
+        }
+
+        &:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+
+            &:hover {
+                background-color: v.$blanco;
+            }
+        }
+    }
 }

@@ -96,6 +96,10 @@ $router->post('/finalizar-registro/gratis', [RegistroController::class, 'gratis'
 // Planes Pagos
 $router->post('/finalizar-registro/pago', [RegistroController::class, 'pago']);
 
+// Seleccionar Conferencia/Workshop luego de Pago exitoso
+$router->get('/finalizar-registro/conferencias', [RegistroController::class, 'conferencias']);
+$router->post('/finalizar-registro/conferencias', [RegistroController::class, 'conferencias']);
+
 // Boleto Virtual
 $router->get('/boleto', [RegistroController::class, 'boleto']);
 

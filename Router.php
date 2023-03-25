@@ -39,7 +39,10 @@ class Router
         // Array de Rutas Protegidas
         $protectedRoutes = [
             '/logout',
-            '/finalizar-registro'
+            '/finalizar-registro',
+            '/finalizar-registro/gratis',
+            '/finalizar-registro/pago',
+            '/finalizar-registro/conferencias'
         ];
 
         // Array de Rutas Login

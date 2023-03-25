@@ -1,6 +1,6 @@
 <main class="boletos">
     <h2 class="boletos__heading"><?php echo $titulo; ?></h2>
-    <p class="boletos__descripcion">Nombre Apellido - Este es tu boleto para asistir a DevWebCamp</p>
+    <p class="boletos__descripcion">Bienvenido <?php echo $registro->usuario->nombre . " " . $registro->usuario->apellido; ?>, este es tu boleto para asistir a DevWebCamp</p>
 
     <div class="boleto-virtual">
         <div class="boleto boleto--<?php echo strtolower($registro->paquete->nombre); ?> boleto--acceso">

@@ -6,18 +6,28 @@ html {
     box-sizing: border-box;
     height: 100%;
 }
-*, *:before, *:after {
+
+*,
+*:before,
+*:after {
     box-sizing: inherit;
 }
+
 body {
     font-family: v.$fuente_principal;
     font-size: 1.8rem;
     //background-color: gray;
 }
+
 a {
     text-decoration: none;
 }
+
 img {
     width: 100%;
     height: auto;
+}
+
+.swal2-html-container{
+    font-size: 1.5rem!important;
 }

@@ -49,6 +49,12 @@
             </ul>
 
             <p class="paquete__precio">$49</p>
+
+            <div id="smart-button-container">
+                <div style="text-align: center;">
+                    <div id="paypal-button-container-virtual"></div>
+                </div>
+            </div><!-- smart-button-container -->
         </div><!-- .paquete -->
 
     </div><!-- .devwebcamp__grid -->
@@ -93,8 +99,7 @@
                         .then(respuesta => respuesta.json()
                             .then(resultado => {
                                 if (resultado.resultado) {
-                                    console.log(`${window.location}/conferencias`);
-                                    //actions.redirect(`${window.location}/conferencias`);
+                                    actions.redirect(`${window.location}/conferencias`);
                                 }
                             }));
 
@@ -105,6 +110,54 @@
                 console.log(err);
             }
         }).render('#paypal-button-container');
+
+        paypal.Buttons({
+            style: {
+                shape: 'pill',
+                color: 'blue',
+                layout: 'vertical',
+                label: 'pay',
+
+            },
+
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        "description": "2",
+                        "amount": {
+                            "currency_code": "USD",
+                            "value": 49
+                        }
+                    }]
+                });
+            },
+
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(orderData) {
+
+                    // Una vez completado el pago Procesa los datos de la Orden
+                    const datos = new FormData();
+                    datos.append('paquete_id', orderData.purchase_units[0].description);
+                    datos.append('pago_id', orderData.purchase_units[0].payments.captures[0].id);
+
+                    fetch('/finalizar-registro/pago', {
+                            method: 'POST',
+                            body: datos
+                        })
+                        .then(respuesta => respuesta.json()
+                            .then(resultado => {
+                                if (resultado.resultado) {
+                                    actions.redirect(`${window.location}/conferencias`);
+                                }
+                            }));
+
+                });
+            },
+
+            onError: function(err) {
+                console.log(err);
+            }
+        }).render('#paypal-button-container-virtual');
     }
     initPayPalButton();
 </script>
