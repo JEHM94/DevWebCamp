@@ -66,8 +66,11 @@ class Router
             '/admin/eventos/crear',
             '/admin/eventos/editar',
             '/admin/eventos/eliminar',
+            '/admin/registrados',
+            '/admin/regalos',
             '/api/eventos-horario',
-            '/api/ponentes'
+            '/api/ponentes',
+            '/api/regalos'
         ];
 
         // Si la Url actual es una ruta protegida

@@ -49,6 +49,10 @@
         }
     }
 
+    &__enlace{
+        color: v.$azul;
+    }
+
     &__accion {
         all: unset;
 

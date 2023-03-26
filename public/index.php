@@ -4,6 +4,7 @@ require_once __DIR__ . '/../includes/app.php';
 
 use Controllers\APIEventoController;
 use Controllers\APIPonenteController;
+use Controllers\APIRegaloController;
 use MVC\Router;
 use Controllers\AuthController;
 use Controllers\DashboardController;
@@ -41,6 +42,7 @@ $router->get('/confirmar-cuenta', [AuthController::class, 'confirmar']);
 // ** Area de API **
 $router->get('/api/eventos-horario', [APIEventoController::class, 'index']);
 $router->get('/api/ponentes', [APIPonenteController::class, 'index']);
+$router->get('/api/regalos', [APIRegaloController::class, 'index']);
 
 // ** Area de Administración **
 $router->get('/admin/dashboard', [DashboardController::class, 'index']);
