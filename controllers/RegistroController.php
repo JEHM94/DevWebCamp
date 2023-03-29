@@ -17,7 +17,7 @@ class RegistroController
         // Verifica si el Usuario ya tiene un plan Registrado
         $registro = Registro::where('usuario_id', $_SESSION['id']);
 
-        if ($registro && ($registro->paquete_id === "3" || $registro->paquete_id === "2")) {
+        if ($registro && $registro->paquete_id === "2") {
             header('Location: /boleto?token=' . $registro->token);
             return;
         }
@@ -30,7 +30,8 @@ class RegistroController
 
 
         $router->render('registro/crear', [
-            'titulo' => 'Finalizar Registro'
+            'titulo' => 'Finalizar Registro',
+            'registro' => $registro ?? ''
         ]);
     }
 
@@ -73,10 +74,11 @@ class RegistroController
             // Verifica si el Usuario ya tiene un plan Registrado
             $registro = Registro::where('usuario_id', $_SESSION['id']);
 
-            if ($registro) {
+            if ($registro && $registro->paquete_id !== "3") {
                 header('Location: /boleto?token=' . $registro->token);
                 return;
             }
+
             if (empty($_POST)) {
                 echo json_encode([
                     'error' => 'Datos no válidos',
@@ -85,6 +87,10 @@ class RegistroController
                 return;
             }
 
+            if ($registro && $registro->paquete_id !== "3") {
+                header('Location: /boleto?token=' . $registro->token);
+                return;
+            }
 
             // Datos para  el Registro
             $datos = $_POST;
@@ -93,6 +99,11 @@ class RegistroController
             $datos['usuario_id'] = $_SESSION['id'];
 
             try {
+                // Elimina el registro anterior si existe
+                if ($registro && $registro->paquete_id === "3") {
+                    $registro->eliminar();
+                }
+
                 // Instancia el nuevo Registro
                 $registro = new Registro($datos);
 

@@ -1,6 +1,10 @@
 <main class="boletos">
     <h2 class="boletos__heading"><?php echo $titulo; ?></h2>
-    <p class="boletos__descripcion">Bienvenido <?php echo $registro->usuario->nombre . " " . $registro->usuario->apellido; ?>, este es tu boleto para asistir a DevWebCamp</p>
+    <?php if ($registro->usuario_id === $_SESSION['id']) : ?>
+        <p class="boletos__descripcion">Bienvenido/a <?php echo $registro->usuario->nombre; ?>, este es tu boleto para asistir a DevWebCamp</p>
+    <?php else : ?>
+        <p class="boletos__descripcion">Boleto de asistencia a DevWebCamp</p>
+    <?php endif; ?>
 
     <div class="boleto-virtual">
         <div class="boleto boleto--<?php echo strtolower($registro->paquete->nombre); ?> boleto--acceso">
@@ -15,4 +19,11 @@
 
         </div><!-- .boleto boleto--xx -->
     </div><!-- boleto -->
+    <?php if ($registro->paquete_id === "3" && $registro->usuario_id === $_SESSION['id']) : ?>
+        <div class="boletos__renovar">
+            <p class="boletos__actualizar-pase">¡Aún puedes actualizar tu boleto a Presencial/Virtual y obtener todos los Beneficios incluidos!</p>
+            <a href="/finalizar-registro" class="boletos__enlace">Actualizar Boleto</a>
+        </div><!-- boletos__renovar -->
+
+    <?php endif; ?>
 </main>

@@ -85,6 +85,7 @@
     font-weight: v.$delgada;
     color: v.$gris-oscuro;
     margin-bottom: 5rem;
+    padding: 0 1rem;
 }
 
 @mixin texto-fluido($min, $max) {

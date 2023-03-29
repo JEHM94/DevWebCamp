@@ -369,6 +369,7 @@ h3 {
   font-weight: 300;
   color: #1E293B;
   margin-bottom: 5rem;
+  padding: 0 1rem;
 }
 
 .auth {
@@ -469,6 +470,24 @@ h3 {
   color: #007df4;
   font-weight: 900;
   text-align: center;
+}
+.paquete__enlace {
+  background-color: #007df4;
+  padding: 1.5rem 4rem;
+  color: #FFFFFF;
+  font-size: 1.8rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 1rem;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  text-align: center;
+  width: 100%;
+  display: inline-block;
+}
+.paquete__enlace:hover {
+  background-color: #0063c1;
+  cursor: pointer;
 }
 .paquete__submit {
   background-color: #007df4;
@@ -775,6 +794,40 @@ h3 {
   display: grid;
   gap: 5rem;
   grid-template-columns: repeat(1, 1fr);
+}
+.boletos__renovar {
+  text-align: center;
+}
+.boletos__actualizar-pase {
+  padding: 0 1rem;
+  font-size: 1.8rem;
+  font-weight: 300;
+  color: #1E293B;
+  margin-top: 5rem;
+}
+.boletos__enlace {
+  background-color: #FFFFFF;
+  padding: 1.5rem 4rem;
+  color: #007df4;
+  font-size: 1.8rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 1rem;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  text-align: center;
+  width: 100%;
+  display: inline-block;
+  border: 1px solid #007df4;
+  width: fit-content;
+}
+.boletos__enlace:hover {
+  background-color: #e6e6e6;
+  cursor: pointer;
+}
+.boletos__enlace:hover {
+  background-color: #007df4;
+  color: #FFFFFF;
 }
 
 .boleto {

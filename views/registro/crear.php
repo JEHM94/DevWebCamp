@@ -12,9 +12,14 @@
 
             <p class="paquete__precio">$0</p>
 
-            <form method="POST" action="/finalizar-registro/gratis">
-                <input type="submit" class="paquete__submit" value="Inscripción Gratis">
-            </form>
+            <?php if ($registro && $registro->paquete_id === "3") : ?>
+                <a class="paquete__enlace" href="/boleto?token=<?php echo $registro->token ?>">Ver Boleto</a>
+            <?php else : ?>
+                <form method="POST" action="/finalizar-registro/gratis">
+                    <input type="submit" class="paquete__submit" value="Inscripción Gratis">
+                </form>
+            <?php endif; ?>
+
         </div><!-- .paquete -->
 
         <div <?php aos_animacion(); ?> class="paquete">
@@ -56,7 +61,6 @@
                 </div>
             </div><!-- smart-button-container -->
         </div><!-- .paquete -->
-
     </div><!-- .devwebcamp__grid -->
 </main>
 
