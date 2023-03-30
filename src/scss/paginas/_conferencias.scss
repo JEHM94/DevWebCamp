@@ -2,7 +2,7 @@
 @use 'base/mixins' as m;
 
 .agenda {
-    padding: 5rem 0;
+    padding: 0 0 5rem 0;
     @include m.contenedor;
 }
 

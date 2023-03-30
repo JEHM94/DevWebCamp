@@ -2,7 +2,7 @@
 @use 'base/mixins' as m;
 
 .header {
-    min-height: 60rem;
+    min-height: 40rem;
     background-image:
         url(../img/grafico.svg),
         url(../img/grafico.svg),
@@ -12,7 +12,7 @@
             url(../img/header.jpg) 1x);
 
     background-repeat: no-repeat;
-    background-size: 400px, 400px, cover, cover;
+    background-size: 300px, 300px, cover, cover;
     background-position: top left, bottom right, center center, center center;
 
     &__contenedor {
@@ -20,7 +20,7 @@
     }
 
     &__navegacion {
-        padding: 5rem 0;
+        padding: 5rem 0 0 0;
         display: flex;
         justify-content: center;
         gap: 2rem;
@@ -43,15 +43,15 @@
     }
 
     &__contenido {
-        padding-top: 10rem;
+        /* padding-top: 10rem;
 
         @include m.tablet {
             padding-top: 5rem;
-        }
+        } */
     }
 
     &__logo {
-        @include m.texto-fluido(2rem, 8rem);
+        @include m.texto-fluido(2rem, 6rem);
         @include m.texto-degradado(v.$azul, v.$secundario);
         text-align: center;
 
